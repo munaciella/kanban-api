@@ -4,7 +4,7 @@ import { connectToDatabase } from "./services/database.service";
 import { taskRouter } from "./routes/tasks.router";
 
 const app = express();
-const port = 8080;
+const port = process.env.PORT || 8080;
 
 app.use(cors());
 
