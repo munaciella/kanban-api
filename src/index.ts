@@ -1,11 +1,20 @@
-import express from 'express';
-import * as mongoDB from 'mongodb'
-import * as dotenv from 'dotenv'
-// import mongoose from 'mongoose';
+import express from "express";
+import { connectToDatabase } from "./services/database.service";
+import { taskRouter } from "./routes/tasks.router";
 
-const collections: {kanban?: mongoDB.Collection<Kanban>} = {}
 
 const app = express();
-const port = 8000;
+const port = 8080; 
 
-app.get('./', (req, res))
+connectToDatabase()
+    .then(() => {
+        app.use("/tasks", taskRouter);
+
+        app.listen(port, () => {
+            console.log(`Server started at http://localhost:${port}`);
+        });
+    })
+    .catch((error: Error) => {
+        console.error("Database connection failed", error);
+        process.exit();
+    });
